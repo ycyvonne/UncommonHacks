@@ -20,6 +20,7 @@
 	 	
 	<!-- Game code -->
 
+		<script type="text/javascript" src="jquery-3.3.1.min.js"></script>
 	 		<!-- Load the common game code. -->
 		<script type="text/javascript" src="game.core.js"></script>
 			<!-- Finally, Load the game client code. -->
@@ -30,6 +31,17 @@
 	<body>
 		<canvas id="viewport">
 		</canvas>
+		<div class="main">
+		</div>
+		<button id="update">Update</button>
 	</body>
-
+<script>
+	$('document').ready(function() {
+		$('#update').click(function(){
+			if (game) {
+				game.update();
+			}
+		})
+	});
+</script>
 </html>

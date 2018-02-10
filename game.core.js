@@ -16,6 +16,7 @@
     // requestAnimationFrame polyfill by Erik Möller
     // fixes from Paul Irish and Tino Zijdel
 
+
 var frame_time = 60/1000; // run the local game at 16ms/ 60hz
 if('undefined' != typeof(global)) frame_time = 45; //on server we run at 45ms, 22hz
 
@@ -206,6 +207,8 @@ game_core.prototype.v_lerp = function(v,tv,t) { return { x: this.lerp(v.x, tv.x,
         this.instance = player_instance;
         this.game = game_instance;
 
+        this.initialized = false;
+
             //Set up initial values for our state information
         this.pos = { x:0, y:0 };
         this.size = { x:16, y:16, hx:8, hy:8 };
@@ -252,8 +255,45 @@ game_core.prototype.v_lerp = function(v,tv,t) { return { x: this.lerp(v.x, tv.x,
             //Draw a status update
         game.ctx.fillStyle = this.info_color;
         game.ctx.fillText(this.state, this.pos.x+10, this.pos.y + 4);
+
+        var isHost = this.host;
+
+        if (typeof this.host !== 'undefined') {
+            if (!this.initialized) {
+                this.initialized = true;
+                this.initialize();
+            }
+        }
+        
     
     }; //game_player.draw
+
+    game_player.prototype.initialize = function() {
+
+        if(this.host) {
+            $.get('tpl/host.html', function(data) {
+                $('.main').html(tplawesome(data, 
+                    [
+                        {
+                            'name': 'host'
+                        }
+                    ])
+                );
+            });
+        }
+        else {
+            $.get('tpl/player.html', function(data) {
+                $('.main').html(tplawesome(data, 
+                    [
+                        {
+                            'name': 'player'
+                        }
+                    ])
+                );
+            });
+        }
+        
+    }
 
 /*
 
@@ -267,6 +307,8 @@ game_core.prototype.v_lerp = function(v,tv,t) { return { x: this.lerp(v.x, tv.x,
 
     //Main update loop
 game_core.prototype.update = function(t) {
+
+    console.log('updating...', t)
     
         //Work out the delta time
     this.dt = this.lastframetime ? ( (t - this.lastframetime)/1000.0).fixed() : 0.016;
@@ -282,7 +324,7 @@ game_core.prototype.update = function(t) {
     }
 
         //schedule the next update
-    this.updateid = window.requestAnimationFrame( this.update.bind(this), this.viewport );
+    // this.updateid = window.requestAnimationFrame( this.update.bind(this), this.viewport );
 
 }; //game_core.update
 
@@ -807,6 +849,8 @@ game_core.prototype.client_update_physics = function() {
 
 game_core.prototype.client_update = function() {
 
+    console.log('client update')
+
         //Clear the screen area
     this.ctx.clearRect(0,0,720,480);
 
@@ -834,10 +878,10 @@ game_core.prototype.client_update = function() {
         //And then we finally draw
     this.players.self.draw();
 
-        //and these
-    if(this.show_dest_pos && !this.naive_approach) {
-        this.ghosts.pos_other.draw();
-    }
+    //     //and these
+    // if(this.show_dest_pos && !this.naive_approach) {
+    //     this.ghosts.pos_other.draw();
+    // }
 
         //and lastly draw these
     if(this.show_server_pos && !this.naive_approach) {
