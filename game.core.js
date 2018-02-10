@@ -260,6 +260,8 @@ game_core.prototype.v_lerp = function(v,tv,t) { return { x: this.lerp(v.x, tv.x,
 
     game_player.prototype.initialize = function() {
 
+        let id = this.id;
+
         if(this.host) {
             $.get('tpl/host.html', function(data) {
                 $('.main').html(tplawesome(data, 
@@ -276,7 +278,8 @@ game_core.prototype.v_lerp = function(v,tv,t) { return { x: this.lerp(v.x, tv.x,
                 $('.main').html(tplawesome(data, 
                     [
                         {
-                            'name': 'player'
+                            'name': 'player',
+                            'id': id
                         }
                     ])
                 );
