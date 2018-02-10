@@ -246,16 +246,6 @@ game_core.prototype.v_lerp = function(v,tv,t) { return { x: this.lerp(v.x, tv.x,
   
     game_player.prototype.draw = function(){
 
-            //Set the color for this player
-        game.ctx.fillStyle = this.color;
-
-            //Draw a rectangle for us
-        game.ctx.fillRect(this.pos.x - this.size.hx, this.pos.y - this.size.hy, this.size.x, this.size.y);
-
-            //Draw a status update
-        game.ctx.fillStyle = this.info_color;
-        game.ctx.fillText(this.state, this.pos.x+10, this.pos.y + 4);
-
         var isHost = this.host;
 
         if (typeof this.host !== 'undefined') {
@@ -851,12 +841,6 @@ game_core.prototype.client_update = function() {
 
     console.log('client update')
 
-        //Clear the screen area
-    this.ctx.clearRect(0,0,720,480);
-
-        //draw help/information if required
-    this.client_draw_info();
-
         //Capture inputs from the player
     this.client_handle_input();
 
@@ -1221,37 +1205,3 @@ game_core.prototype.client_refresh_fps = function() {
     } //reached 10 frames
 
 }; //game_core.client_refresh_fps
-
-
-game_core.prototype.client_draw_info = function() {
-
-        //We don't want this to be too distracting
-    this.ctx.fillStyle = 'rgba(255,255,255,0.3)';
-
-        //They can hide the help with the debug GUI
-    if(this.show_help) {
-
-        this.ctx.fillText('net_offset : local offset of others players and their server updates. Players are net_offset "in the past" so we can smoothly draw them interpolated.', 10 , 30);
-        this.ctx.fillText('server_time : last known game time on server', 10 , 70);
-        this.ctx.fillText('client_time : delayed game time on client for other players only (includes the net_offset)', 10 , 90);
-        this.ctx.fillText('net_latency : Time from you to the server. ', 10 , 130);
-        this.ctx.fillText('net_ping : Time from you to the server and back. ', 10 , 150);
-        this.ctx.fillText('fake_lag : Add fake ping/lag for testing, applies only to your inputs (watch server_pos block!). ', 10 , 170);
-        this.ctx.fillText('client_smoothing/client_smooth : When updating players information from the server, it can smooth them out.', 10 , 210);
-        this.ctx.fillText(' This only applies to other clients when prediction is enabled, and applies to local player with no prediction.', 170 , 230);
-
-    } //if this.show_help
-
-        //Draw some information for the host
-    if(this.players.self.host) {
-
-        this.ctx.fillStyle = 'rgba(255,255,255,0.7)';
-        this.ctx.fillText('You are the host', 10 , 465);
-
-    } //if we are the host
-
-
-        //Reset the style back to full white.
-    this.ctx.fillStyle = 'rgba(255,255,255,1)';
-
-}; //game_core.client_draw_help
