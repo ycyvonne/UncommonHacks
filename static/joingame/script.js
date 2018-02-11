@@ -4,6 +4,7 @@ var currentSlide = 1;
 function joinGame(){
 	var formData = $('form').serializeArray();
 	console.log("formdata", formData);
+	sessionStorage.clear();
 	socket.emit('join', formData);
 }
 
@@ -12,7 +13,7 @@ nominateChanc = function(id) {
 }
 
 voteChanc = function(vote) {
-	socket.emit('votechanc', vote);
+	socket.emit('votechanc', [vote, sessionStorage.getItem("userid")]);
 }
 
 discardCard = function(card) {
@@ -20,15 +21,24 @@ discardCard = function(card) {
 }
 
 socket.on('addPlayer', function(data) {
+
 	$('.slide-1').addClass('left-hide');
 	$('.slide-2').removeClass('right-hide');
+
+	if(!sessionStorage.getItem("userid")){
+		sessionStorage.setItem("userid", data[1]);
+		console.log(sessionStorage.getItem("userid"));
+	}
+
 });
 
 socket.on('gamestate', function(data) {
+	$(".title").html(data.players[sessionStorage.getItem("userid")].role);
+	$("#waiting").empty();
 	if(!data.inPower) {
 		if (!data.chanc) {
 			// chancelor not nominated yet
-			if (sessionStorage.userid == data.pres_id) {
+			if (sessionStorage.getItem("userid") == data.pres_id) {
 				// president choosing chancelor
 				//TODO: insert buttons into div choosechanc and an onclick handler(nominateChanc)
 				console.log("Scarecrow candidates:");
@@ -44,7 +54,7 @@ socket.on('gamestate', function(data) {
 			}
 		} else {
 			// votes
-			if (data.players[sessionStorage.userid].voteStatus == null) {
+			if (data.players[sessionStorage.getItem("userid")].voteStatus == null) {
 				// vote
 				//TODO: create 2 buttons (yay/nay) and onclick handlers
 				console.log("time to vote");
@@ -56,7 +66,7 @@ socket.on('gamestate', function(data) {
 		}
 	} else {
 		// government in power
-		if (sessionStorage.userid == data.pres_id) {
+		if (sessionStorage.getItem("userid") == data.pres_id) {
 			// president
 			if (data.deck.limboPile.length == 3) {
 				// discard 1 out of 3
@@ -67,7 +77,7 @@ socket.on('gamestate', function(data) {
 				//TODO: display waiting message
 				console.log("Waiting for the chancelor to pick a card...");
 			}
-		} else if (sessionStorage.userid == data.pres_id) {
+		} else if (sessionStorage.getItem("userid") == data.pres_id) {
 				// chancelor
 			if (data.deck.limboPile.length == 2) {
 				// chancelor picks a card
