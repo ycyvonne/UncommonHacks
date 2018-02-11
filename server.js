@@ -176,11 +176,8 @@ game = new Game()
 io.on('connection', function(socket) {
 	socket.on('join', function(data) {
 		var userid = UUID();
-		if(!sessionStorage.userid) {
-			sessionStorage.userid = userid;
-		}
 		game.addPlayer(userid, data[1]['value']);
-		io.sockets.emit('addPlayer', data[1]['value']);
+		io.sockets.emit('addPlayer', [data[1]['value'], userid]);
 	});
 	socket.on('startgame', function(data) {
 		game.startGame();
@@ -191,7 +188,7 @@ io.on('connection', function(socket) {
 		io.sockets.emit('gamestate', game);
 	});
 	socket.on('votechanc', function(data) {
-		game.players[sessionStorage.userid].vote(data);
+		game.players[data[1]].vote(data[0]);
 		game.voted += 1;
 		if (game.voted == 5) {
 			if (!game.tallyVotes()) {

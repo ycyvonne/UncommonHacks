@@ -7,7 +7,7 @@ var btnInterval;
 
 socket.on('addPlayer', function(data) {
 	if (canAddPeople) {
-		$("<li>" + data + "</li>").hide().appendTo('#playersList').fadeIn(300);
+		$("<li>" + data[0] + "</li>").hide().appendTo('#playersList').fadeIn(300);
 		counter += 1;
 		if(counter == 5) {
 			canAddPeople = false;
