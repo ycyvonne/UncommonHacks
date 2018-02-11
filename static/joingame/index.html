@@ -214,7 +214,7 @@ button {
 	border-top: 40px solid #ff7600;
 }
 
-#role, #action {
+#role, #action, .policy-role {
 	position: absolute;
     top: -30px;
     color: white;
@@ -294,6 +294,19 @@ button {
 	pointer-events: none;
 }
 
+
+.policy-card {
+
+}
+
+.policy-card.celery {
+	border-top: 40px solid #21d662;
+}
+
+.policy-card.crow {
+	border-top: 40px solid #ff7600;
+}
+
 </style>
 </head>
 <body>
@@ -346,6 +359,22 @@ button {
 				<div class="card-inner">
 					<div class="card-label vote-btn" data-id="yes">Yes</div>
 					<div class="card-label vote-btn" data-id="no">No</div>
+				</div>
+			</div>
+		</div>
+		<div class="slide slide-5 right-hide">
+			<div class="card-slide-container policy-container">
+				<div class="card policy-card">
+					<div class="policy-role">Crows</div>
+					<div class="policy-description">Your celery has been poisoned</div>
+				</div>
+				<div class="card policy-card" style="left: 450px">
+					<div class="policy-role">Celery</div>
+					<div class="policy-description">Extra water pumps up your stalks</div>
+				</div>
+				<div class="card policy-card" style="left: 710px">
+					<div class="policy-role">Crows</div>
+					<div class="policy-description">Deteriorated turgidity</div>
 				</div>
 			</div>
 		</div>

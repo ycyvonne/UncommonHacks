@@ -21,7 +21,6 @@ socket.on('addPlayer', function(data) {
 socket.on('gamestate', function(data) {
 	$('#gardener').html(data.players[data.pres_id].name);
 	//TODO: display scores
-	console.log(data.score);
 	if (!data.inpower) {
 		if (data.chanc_id == null) {
 			//TODO: diplay message
@@ -31,6 +30,8 @@ socket.on('gamestate', function(data) {
 			// console.log("It's voting time!");
 			$('.slide-2').addClass('hide');
 			$('.slide-3').removeClass('hide');
+
+			$('.voting-scarecrow').html(data.players[data.chanc_id.trim()].name)
 		}
 	} else {
 		//TODO: display msg

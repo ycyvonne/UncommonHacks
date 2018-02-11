@@ -114,7 +114,7 @@ function Game(){
 	this.tallyVotes = function() {
 		var yes = 0;
 		for(var id in this.players){
-			if(players[id].voteStatus){
+			if(this.players[id].voteStatus){
 				yes += 1;
 			}
 		}

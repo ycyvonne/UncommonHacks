@@ -16,8 +16,11 @@ voteChanc = function(vote) {
 	socket.emit('votechanc', [vote, sessionStorage.getItem("userid")]);
 }
 
-discardCard = function(card) {
-	socket.emit('discard', card);
+discardCard = function(card, description) {
+	socket.emit('discard', {
+		'card': card,
+		'description': description
+	});
 }
 
 socket.on('addPlayer', function(data) {
@@ -34,6 +37,35 @@ socket.on('addPlayer', function(data) {
 });
 
 var nominatedScarecrow = false;
+
+var policies = {
+	'crow': [
+		'Your celery has been poisoned',
+		'Someone is scattering birdseed in the garden',
+		'Scarecrow got scared is now less scary',
+		'Inferior GMO celery',
+		'Someone broke your stalks',
+		'Deteriorated turgidity',
+		'Too much sun = no fun',
+		'Doesn’t have enough caffeine starts to wilt',
+		'Gardener takes a holiday',
+		'Wild weeds strangle your seeds',
+		'Broccoli in the celery patch… gross'
+	],
+	'celery': [
+		'Some kick-ass fertilizer',
+		'Extra water pumps up your stalks',
+		'Drought resistance improved',
+		'Bird netting installed',
+		'Crow detection radar',
+		'Drone zone eliminates crow threat'
+	]
+}
+
+function getRandomPolicy(type) {
+	var choices = policies[type];
+	return choices[Math.floor(Math.random() * choices.length)];
+}
 
 socket.on('gamestate', function(data) {
 
@@ -60,7 +92,7 @@ socket.on('gamestate', function(data) {
 	$('#player-name').html(playerName)
 
 	if(!data.inPower) {
-		if (data.chanc == null) {
+		if (data.chanc_id == null) {
 			// chancelor not nominated yet
 			if (sessionStorage.getItem("userid") == data.pres_id) {
 				
@@ -125,6 +157,24 @@ socket.on('gamestate', function(data) {
 				// discard 1 out of 3
 				//TODO: display 3 buttons and onclick handler (discardCard)
 				console.log(data.deck.limboPile);
+
+				$('.slide-4').addClass('left-hide');
+				$('.slide-5').removeClass('right-hide');
+				currentSlide = 5;
+
+				data.deck.limboPile.forEach(function(role, i) {
+					var policy = getRandomPolicy(role);
+					var htmlCard = $('.card-slide-container.policy-container').children()[i];
+					$(htmlCard).find('.policy-role').html(role);
+					$(htmlCard).find('.policy-description').html(policy);
+					$(htmlCard).addClass(role);
+					$(htmlCard).data('role',role);
+				});
+
+				$('.policy-card').click(function(e) {
+					console.log('clicked', $(e.target).attr('data-role'));
+				})
+
 			} else {
 				// wait for the chancelor to pick a card
 				//TODO: display waiting message
