@@ -60,28 +60,32 @@ socket.on('gamestate', function(data) {
 	$('#player-name').html(playerName)
 
 	if(!data.inPower) {
-		if (!data.chanc && !nominatedScarecrow) {
+		if (data.chanc == null) {
 			// chancelor not nominated yet
 			if (sessionStorage.getItem("userid") == data.pres_id) {
-				// president choosing chancelor
-				//TODO: insert buttons into div choosechanc and an onclick handler(nominateChanc)
-				console.log("Scarecrow candidates:");
-				$('.choose-scarecrow .card-inner').html();
-				$('.choose-scarecrow').removeClass('hide');
+				
+				if (!nominatedScarecrow) {
+					// president choosing chancelor
+					//TODO: insert buttons into div choosechanc and an onclick handler(nominateChanc)
+					console.log("Scarecrow candidates:");
+					$('.choose-scarecrow .card-inner').html();
+					$('.choose-scarecrow').removeClass('hide');
 
-				for (var id in data.players) {
-					if (id != data.pres_id) {
-						console.log('adding...', data.players[id].name)
-						$('.choose-scarecrow .card-inner').append('<div class="scarecrow-choice card-label" data-id="' + id + ' ">' + data.players[id].name + '</div>')
+					for (var id in data.players) {
+						if (id != data.pres_id) {
+							console.log('adding...', data.players[id].name)
+							$('.choose-scarecrow .card-inner').append('<div class="scarecrow-choice card-label" data-id="' + id + ' ">' + data.players[id].name + '</div>')
+						}
 					}
+
+					$('.scarecrow-choice').click(function(e) {
+						$('.scarecrow-choice').addClass('disable-touch');
+						$(e.target).addClass('selected');
+						nominateChanc($(e.target).attr('data-id'));
+						nominatedScarecrow = true;
+					});
 				}
 
-				$('.scarecrow-choice').click(function(e) {
-					$('.scarecrow-choice').addClass('disable-touch');
-					$(e.target).addClass('selected');
-					nominateChanc($(e.target).attr('data-id'));
-					nominatedScarecrow = true;
-				});
 
 			} else {
 				// others waiting for the president to pick the chancelor
