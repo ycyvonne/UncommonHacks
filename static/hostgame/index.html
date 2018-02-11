@@ -1,15 +1,148 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-		<script src="/socket.io/socket.io.js"></script>
-		<script src="script.js"></script>
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-	</head>
-	<body>
-		<p id="roomcode">Room Code: avx9</p>
-		<ul id="playersList">
-		</ul>
+<head>
+	<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="script.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style type="text/css">
+	body {
+	background: #b4e7f5;
+}
+* {
+	box-sizing: border-box;
+	font-family: 'avenir';
+}
+
+*:focus {
+	outline: none;
+}
+button {
+	box-shadow: 0px 0 20px 0px rgba(0,0,0,0.1);
+}
+.mobile-wrapper {
+	width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+	background-image: url(../img/celery.png);
+    background-repeat: repeat;
+    background-size: 50px;
+}
+.center-large {
+	width: 60%;
+    min-height: 400px;
+    background: white;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0px 0 20px 0px rgba(0,0,0,0.1);
+    flex-direction: column;
+    padding: 40px;
+    border-bottom: 20px solid #ff7600;
+    z-index: 1;
+}
+
+.title {
+	font-family: 'avenir-black';
+	font-size: 20px;
+    color: #0c0c63;
+
+}
+
+.center input {
+	border: none;
+    border-bottom: 2px solid #e8e8e8;
+    width: 100%;
+    font-size: 16px;
+    padding: 10px;
+    margin-bottom: 16px;
+    transition: border 0.2s ease;
+}
+
+.center input:focus {
+	border-bottom: 2px solid #0c0f0d;
+}
+
+.submit {
+	background: deepskyblue;
+    padding: 10px 60px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin: 20px;
+    box-shadow: 0px 0 20px 0px rgba(0,0,0,0.1);
+    font-size: 16px;
+}
+
+#playersList {
+	list-style-type: none;
+	padding: 0;
+}
+
+#playersList li{
+	padding: 20px;
+	display: inline-block;
+	background: #b4e7f5;
+	color: white;
+	margin: 10px;
+	box-shadow: 0px 0 20px 0px rgba(0,0,0,0.1);
+}
+
+.next-btn {
+	cursor: pointer;
+	background: white;
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+	display: flex;
+	align-content: center;
+	justify-content: center;
+	overflow: hidden;
+	border: 10px solid #f3f3f3;
+	position: absolute;
+    bottom: -50px;
+
+    -webkit-transition: transform 0.4s ease;
+    transition: transform 0.4s cubic-bezier(0.5, -0.03, 0.29, 1.36);
+}
+
+.next-btn:hover {
+	-webkit-transform: rotate(45deg);
+	transform: rotate(45deg);
+}
+
+.next-btn img{
+	height:300px;
+}
+
+</style>
+</head>
+<body>
+	<div class="mobile-wrapper">
+		<div class="center-large">
+			<div class="header"><p class="title">Join: avx9</p></div>
+			<ul id="playersList">
+				<li>Plafdsr 1</li>
+				<li>Playfdsafasder 2</li>
+				<li>Playfdsafdasfer 3</li>
+				<li>Playerfdsfasd 4</li>
+				<li>Pfdsafsdlayer 5</li>
+			</ul>
 		<p id="gardener"></p>
-	</body>
+			<div class="next-btn">
+				<img src="../img/crow.png"/>
+			</div>
+		</div>
+		
+	</div>
+	
+</body>
+>>>>>>> 584632fad70ae071b7d9a77b819b046b8067171b
 </html>
