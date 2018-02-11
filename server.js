@@ -31,7 +31,7 @@ function Player(id, name){
 	this.id = id;
 	this.role = "";
 	this.name = name;
-	this.voteStatus = true;
+	this.voteStatus = null;
 	this.vote = function(v){
 		this.voteStatus = v;
 	}
@@ -84,6 +84,7 @@ function Game(){
 		celery: 0,
 		crow: 0
 	}
+	this.voted = 0;
 	this.gameover = false;
 	this.addPlayer = function(id, name){
 		this.players[id] = new Player(id, name);
@@ -123,9 +124,27 @@ function Game(){
 		}
 		return false;
 	}
+	this.changePres = function() {
+		var found = false;
+		for (var id in this.players) {
+			if (found) {
+				this.pres_id = id;
+				found = false;
+				break;
+			}
+			if (id == this.pres_id) {
+				found = true;
+			}
+		}
+		if (found) {
+			for (var id in this.players) {
+				this.pres_id = id;
+				break;
+			}
+		}
+	}
 	this.draw = function() {
 		this.deck.draw3();
-		return this.deck.limboPile;
 	}
 	this.discard = function(discardCard) {
 		this.discardPile.push(discardCard);
@@ -146,6 +165,7 @@ function Game(){
 			}
 			else {
 				this.deck.limboPile = [];
+				this.chanc = null;
 			}
 		}
 	}
@@ -156,12 +176,44 @@ game = new Game()
 io.on('connection', function(socket) {
 	socket.on('join', function(data) {
 		var userid = UUID();
+		if(!sessionStorage.userid) {
+			sessionStorage.userid = userid;
+		}
 		game.addPlayer(userid, data[1]['value']);
 		io.sockets.emit('addPlayer', data[1]['value']);
 	});
 	socket.on('startgame', function(data) {
 		game.startGame();
 		io.sockets.emit('gamestate', game);	
+	});
+	socket.on('newchanc', function(data) {
+		game.chooseChanc(data);
+		io.sockets.emit('gamestate', game);
+	});
+	socket.on('votechanc', function(data) {
+		game.players[sessionStorage.userid].vote(data);
+		game.voted += 1;
+		if (game.voted == 5) {
+			if (!game.tallyVotes()) {
+				game.changePres();
+				game.chanc_id = null;				
+			} else {
+				game.draw();
+			}
+			game.voted = 0;
+			for (var id in game.players) {
+				game.players[id].voteStatus = null;
+			}
+		}
+		io.sockets.emit('gamestate', game);
+	});
+	socket.on('discard', function(data) {
+		game.discard(data);
+		if (game.gameover) {
+			io.sockets.emit('gameover', game.winner);
+		} else {
+			io.sockets.emit('gamestate', game);
+		}
 	});
 	socket.on('broadcastgame', function(data) {
 		io.sockets.emit('gamestate', game);

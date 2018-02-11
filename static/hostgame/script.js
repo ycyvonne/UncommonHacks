@@ -20,6 +20,25 @@ socket.on('addPlayer', function(data) {
 
 socket.on('gamestate', function(data) {
 	$('#gardener').html(data.players[data.pres_id].name);
+	//TODO: display scores
+	console.log(data.score);
+	if (!data.inpower) {
+		if (data.chanc_id == null) {
+			//TODO: diplay message
+			console.log("Gardener is picking the scarecrow...");
+		} else {
+			//TODO: display message
+			console.log("It's voting time!");
+		}
+	} else {
+		//TODO: display msg
+		console.log("Cards are being drawn...");
+	}
+});
+
+socket.on('gameover', function(data) {
+	//TODO: display winner and credits
+	console.log(data);
 });
 
 $('document').ready(function() {
