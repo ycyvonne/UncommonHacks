@@ -324,7 +324,7 @@ game_core.prototype.update = function(t) {
     }
 
         //schedule the next update
-    // this.updateid = window.requestAnimationFrame( this.update.bind(this), this.viewport );
+    this.updateid = window.requestAnimationFrame( this.update.bind(this), this.viewport );
 
 }; //game_core.update
 
