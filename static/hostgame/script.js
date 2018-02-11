@@ -27,8 +27,10 @@ socket.on('gamestate', function(data) {
 			//TODO: diplay message
 			console.log("Gardener is picking the scarecrow...");
 		} else {
-			//TODO: display message
-			console.log("It's voting time!");
+			// //TODO: display message
+			// console.log("It's voting time!");
+			$('.slide-2').addClass('hide');
+			$('.slide-3').removeClass('hide');
 		}
 	} else {
 		//TODO: display msg
