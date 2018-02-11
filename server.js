@@ -120,6 +120,7 @@ function Game(){
 		}
 		if(yes>2){
 			this.inPower = true;
+			console.log('yes, this is', this)
 			return true;
 		}
 		return false;
@@ -148,7 +149,6 @@ function Game(){
 	}
 	this.discard = function(discardCard) {
 		console.log('discardCard', discardCard)
-		console.log('this', this)
 		this.deck.discardPile.push(discardCard);
 		for(var i=0;i<this.deck.limboPile.length;i++){
 			if(this.deck.limboPile[i]==discardCard){
