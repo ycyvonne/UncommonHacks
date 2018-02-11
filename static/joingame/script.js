@@ -37,6 +37,7 @@ socket.on('addPlayer', function(data) {
 });
 
 var nominatedScarecrow = false;
+var discarded = false;
 
 var policies = {
 	'crow': [
@@ -152,35 +153,45 @@ socket.on('gamestate', function(data) {
 	} else {
 		// government in power
 		if (sessionStorage.getItem("userid") == data.pres_id) {
+
+
 			// president
 			if (data.deck.limboPile.length == 3) {
-				// discard 1 out of 3
-				//TODO: display 3 buttons and onclick handler (discardCard)
-				console.log(data.deck.limboPile);
 
-				$('.slide-4').addClass('left-hide');
-				$('.slide-5').removeClass('right-hide');
-				currentSlide = 5;
+				if (!discarded) {
+					// discard 1 out of 3
+					//TODO: display 3 buttons and onclick handler (discardCard)
+					console.log(data.deck.limboPile);
 
-				data.deck.limboPile.forEach(function(role, i) {
-					var policy = getRandomPolicy(role);
-					var htmlCard = $('.card-slide-container.policy-container').children()[i];
-					$(htmlCard).find('.policy-role').html(role);
-					$(htmlCard).find('.policy-description').html(policy);
-					$(htmlCard).addClass(role);
-					$(htmlCard).data('role',role);
-				});
+					$('.slide-4').addClass('left-hide');
+					$('.slide-5').removeClass('right-hide');
+					currentSlide = 5;
 
-				$('.policy-card').click(function(e) {
-					console.log('clicked', $(e.target).attr('data-role'));
-				})
+					data.deck.limboPile.forEach(function(role, i) {
+						var policy = getRandomPolicy(role);
+						var htmlCard = $('.card-slide-container.policy-container').children()[i];
+						$(htmlCard).find('.policy-role').html(role);
+						$(htmlCard).find('.policy-description').html(policy);
+						$(htmlCard).addClass(role);
+						$(htmlCard).attr('data-role',role);
+					});
+
+					$('.policy-card').click(function(e) {
+						var role = $(e.target).attr('data-role');
+						console.log('role discarded', role)
+						discardCard(role);
+					});
+
+					discarded = true;
+				}
+				
 
 			} else {
 				// wait for the chancelor to pick a card
 				//TODO: display waiting message
 				console.log("Waiting for the chancelor to pick a card...");
 			}
-		} else if (sessionStorage.getItem("userid") == data.pres_id) {
+		} else if (sessionStorage.getItem("userid") == data.chanc_id) {
 				// chancelor
 			if (data.deck.limboPile.length == 2) {
 				// chancelor picks a card

@@ -147,7 +147,9 @@ function Game(){
 		this.deck.draw3();
 	}
 	this.discard = function(discardCard) {
-		this.discardPile.push(discardCard);
+		console.log('discardCard', discardCard)
+		console.log('this', this)
+		this.deck.discardPile.push(discardCard);
 		for(var i=0;i<this.deck.limboPile.length;i++){
 			if(this.deck.limboPile[i]==discardCard){
 				this.deck.limboPile.splice(i, 1);
