@@ -1,4 +1,5 @@
 var socket = io();
+var currentSlide = 1;
 
 function joinGame(){
 	var formData = $('form').serializeArray();
@@ -19,9 +20,8 @@ discardCard = function(card) {
 }
 
 socket.on('addPlayer', function(data) {
-	$('#joinform').empty();
-	$('#joinbutton').empty();
-	$('#waiting').html("Waiting for other players to join ...");
+	$('.slide-1').addClass('left-hide');
+	$('.slide-2').removeClass('right-hide');
 });
 
 socket.on('gamestate', function(data) {

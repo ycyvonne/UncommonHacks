@@ -79,20 +79,42 @@ button {
     font-size: 16px;
 }
 
+.slide {
+	position: absolute;
+	transform: translate(0);
+	transition: transform 1s ease;
+	width: 100%;
+	height: 100%;
+}
+
+.right-hide {
+	transform: translateX(100%);
+}
+
+.left-hide {
+	transform: translateX(-100%);
+}
+
 </style>
 </head>
 <body>
 	<div class="mobile-wrapper">
-		<div class="center">
-			<p class="title">Crows Vs Celery</p>
-			<form id="joinform">
-				<input type="text" placeholder="Room code" name="roomcode">
-				<input type="text" placeholder="Name" name="name">
-			</form>
-			<div id="joinbutton">
-				<button onclick="joinGame();" class="submit">Submit</button>
+		<div class="slide slide-1">
+			<div class="center">
+				<p class="title">Crows Vs Celery</p>
+				<form id="joinform">
+					<input type="text" placeholder="Room code" name="roomcode">
+					<input type="text" placeholder="Name" name="name">
+				</form>
+				<div id="joinbutton">
+					<button onclick="joinGame();" class="submit">Submit</button>
+				</div>
 			</div>
-			<p id="waiting"></p>
+		</div>
+		<div class="slide slide-2 right-hide">
+			<p id="waiting">Waiting for other players to join...</p>
+		</div>
+		<div class="slide slide-3 right-hide">
 			<div id="choosechanc"></div>
 		</div>
 	</div>
