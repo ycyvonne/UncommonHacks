@@ -75,9 +75,9 @@ function Deck(){
 }
 
 function Game(){
-	this.players = [];
-	this.pres_idx = null;
-	this.chanc_idx = null;
+	this.players = {};
+	this.pres_id = null;
+	this.chanc_id = null;
 	this.inPower = false;
 	this.deck = new Deck();
 	this.score = {
@@ -86,30 +86,34 @@ function Game(){
 	}
 	this.gameover = false;
 	this.addPlayer = function(id, name){
-		this.players.push(new Player(id, name));
+		this.players[id] = new Player(id, name);
 	}
 	this.assignRoles = function(){
 		var roles = ["cel", "cel", "cel", "crow", "master"];
 		shuffle(roles);
-		for(var i=0; i<this.players.length; i++){
-			this.players[i].role = roles[i];
+		var i = 0;
+		for(var id in this.players){
+			players[id].role = roles[i];
+			i += 1;
 		}
 	}
 	this.startGame = function() {
-		if(players.length != 5) {
+		if(Object.keys(this.players).length != 5) {
 			//Error?
 		}
 		this.deck.shuffle();
 		this.assignRoles();
-		this.pres_idx = Math.floor(math.random()*5);
+		var ids = this.players.keys();
+		shuffle(ids);
+		this.pres_id = ids[0];
 	}
-	this.chooseChanc = function(idx) {
-		this.chanc_idx = idx;
+	this.chooseChanc = function(id) {
+		this.chanc_id = id;
 	}
 	this.tallyVotes = function() {
 		var yes = 0;
-		for(var i=0; i<players.length; i++){
-			if(players[i].voteStatus){
+		for(var id in this.players){
+			if(players[id].voteStatus){
 				yes += 1;
 			}
 		}
@@ -153,7 +157,14 @@ io.on('connection', function(socket) {
 	socket.on('join', function(data) {
 		var userid = UUID();
 		game.addPlayer(userid, data[1]['value']);
-		//socket.emit('addPlayer', 
+		io.sockets.emit('addPlayer', data[1]['value']);
+	});
+	socket.on('startgame', function(data) {
+		game.startGame();
+		io.sockets.emit('gamestate', game);	
+	});
+	socket.on('broadcastgame', function(data) {
+		io.sockets.emit('gamestate', game);
 	});
 });
 
