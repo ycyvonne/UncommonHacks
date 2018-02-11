@@ -91,7 +91,35 @@ button {
 	display: inline-block;
 	background: #b4e7f5;
 	color: white;
-	margin-bottom: 5px;
+	margin: 10px;
+	box-shadow: 0px 0 20px 0px rgba(0,0,0,0.1);
+}
+
+.next-btn {
+	cursor: pointer;
+	background: white;
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+	display: flex;
+	align-content: center;
+	justify-content: center;
+	overflow: hidden;
+	border: 10px solid #f3f3f3;
+	position: absolute;
+    bottom: -50px;
+
+    -webkit-transition: transform 0.4s ease;
+    transition: transform 0.4s cubic-bezier(0.5, -0.03, 0.29, 1.36);
+}
+
+.next-btn:hover {
+	-webkit-transform: rotate(45deg);
+	transform: rotate(45deg);
+}
+
+.next-btn img{
+	height:300px;
 }
 
 </style>
@@ -107,7 +135,11 @@ button {
 				<li>Playerfdsfasd 4</li>
 				<li>Pfdsafsdlayer 5</li>
 			</ul>
+			<div class="next-btn">
+				<img src="../img/crow.png"/>
+			</div>
 		</div>
+		
 	</div>
 	
 </body>
