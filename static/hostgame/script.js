@@ -20,6 +20,9 @@ socket.on('addPlayer', function(data) {
 
 socket.on('gamestate', function(data) {
 	$('#gardener').html(data.players[data.pres_id].name);
+	$('#crow-score').html(data.score['crow'])
+	$('#celery-score').html(data.score['celery'])
+
 	//TODO: display scores
 	if (!data.inpower) {
 		if (data.chanc_id == null) {

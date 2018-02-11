@@ -234,6 +234,7 @@ socket.on('gamestate', function(data) {
 			} else {
 				// wait for the president to discard one
 				//TODO: display waiting message
+				console.log('data', data)
 				console.log("Waiting for the president to discard a card...");
 			}
 		} else {

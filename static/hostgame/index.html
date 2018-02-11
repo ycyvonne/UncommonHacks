@@ -151,6 +151,21 @@ button {
     font-size: 24px;
 }
 
+.scores {
+	background: white;
+    display: inline-block;
+    padding: 20px;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    box-shadow: 0px 0 20px 0px rgba(0,0,0,0.1);
+    top: 20px;
+}
+
+.scores > * {
+	display: inline-block;
+}
+
 </style>
 </head>
 <body>
@@ -170,10 +185,15 @@ button {
 				<div class="center voting-scarecrow">
 				</div>
 			</div>
+			
 			<div class="next-btn">
 				<img src="../img/crow.png"/>
 			</div>
 		</div>
+		<div class="scores">
+				<h3>Crows: <span id="crow-score">0</span></h3>
+				<h3>Celery: <span id="celery-score">0</span></h3>
+			</div>
 		
 	</div>
 </body>
