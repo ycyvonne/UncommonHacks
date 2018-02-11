@@ -157,11 +157,11 @@ function Game(){
 		}
 		if(this.deck.limboPile.length == 1) {
 			this.score[this.deck.limboPile[0]] += 1;
-			if(this.score[celery] == 5) {
+			if(this.score['celery'] == 5) {
 				this.winner = "celery";
 				this.gameover = true;
 			}
-			else if(this.score[crow] == 6) {
+			else if(this.score['crow'] == 6) {
 				this.winner = "crow";
 				this.gameover = true;
 			}

@@ -186,6 +186,7 @@ socket.on('gamestate', function(data) {
 						var role = $(e.target).attr('data-role');
 						console.log('role discarded', role)
 						discardCard(role);
+						$(e.target).addClass('card-select')
 					});
 
 					discardedFirst = true;
@@ -206,7 +207,8 @@ socket.on('gamestate', function(data) {
 				if (!discardedSecond) {
 					console.log(data.deck.limboPile);
 
-					$('.slide-' + currentSlide).addClass('left-hide');
+					$('.slide-4').addClass('left-hide');
+					$('.slide-5').addClass('left-hide');
 					$('.slide-6').removeClass('right-hide');
 					currentSlide = 6;
 
@@ -221,6 +223,7 @@ socket.on('gamestate', function(data) {
 					});
 
 					$('.policy-card').click(function(e) {
+						$(e.target).addClass('card-select');
 						var role = $(e.target).attr('data-role');
 						discardCard(role);
 					});
