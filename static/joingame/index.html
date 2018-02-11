@@ -26,6 +26,7 @@ button {
     overflow: hidden;
 	background-image: url(../img/crow.png);
     background-repeat: no-repeat;
+    position: absolute;
 }
 .center {
 	width: 250px;
@@ -82,9 +83,13 @@ button {
 .slide {
 	position: absolute;
 	transform: translate(0);
-	transition: transform 1s ease;
+	transition: transform 0.6s ease;
 	width: 100%;
 	height: 100%;
+}
+
+.hide {
+	display: none;
 }
 
 .right-hide {
@@ -93,6 +98,197 @@ button {
 
 .left-hide {
 	transform: translateX(-100%);
+}
+
+@-webkit-keyframes rotating /* Safari and Chrome */ {
+  from {
+    -webkit-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes rotating {
+  from {
+    -ms-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  to {
+    -ms-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+.rotating {
+  -webkit-animation: rotating 2s linear infinite;
+  -moz-animation: rotating 2s linear infinite;
+  -ms-animation: rotating 2s linear infinite;
+  -o-animation: rotating 2s linear infinite;
+  animation: rotating 2s linear infinite;
+}
+
+.slide-2 {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+}
+
+.loading, .circle {
+	width: 100px;
+	height: 100px;
+	background: white;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.loading img, .circle img{
+	width: 100%;
+	height: 100%;
+}
+
+#waiting {
+	color: white;
+    margin-top: 200px;
+}
+
+.card {
+	background: white;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0px 0 20px 0px rgba(0,0,0,0.1);
+    flex-direction: column;
+    padding: 40px;
+    z-index: 1;
+    width: 250px;
+    height: 400px;
+
+    transition: all 0.4s ease;
+}
+
+.card.celery {
+	border-top: 40px solid #21d662;
+}
+
+.circle {
+	box-shadow: 0px 0 20px 0px rgba(0,0,0,0.1);
+	display: none;
+	overflow: hidden;
+	border: 10px solid white;
+}
+
+.card.celery .celery-circle {
+	display: flex;
+}
+
+.card.crow .crow-circle {
+	display: flex;
+}
+
+.crow-circle img {
+    height: 300px;
+    width: auto;
+    margin-top: 200px;
+}
+
+.card.crow, .card.master{
+	border-top: 40px solid #ff7600;
+}
+
+#role, #action {
+	position: absolute;
+    top: -30px;
+    color: white;
+    text-align: center;
+}
+
+#player-name {
+	font-weight: bold;
+    margin-top: 40px;
+    text-align: center;
+}
+
+.card-inner {
+	display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    flex-direction: column;
+}
+
+.card.collapsed {
+    height: 100px;
+    bottom: 0px;
+    top: inherit;
+
+    transition: all 0.4s ease;
+}
+
+.card.collapsed:hover {
+	bottom: 20px;
+}
+
+.card.collapsed .card-inner {
+	opacity: 0;
+}
+
+.card-label {
+	box-shadow: 0px 0 20px 0px rgba(0,0,0,0.1);
+    padding: 10px 20px;
+    margin-top: 40px;
+    border-radius: 50px;
+    font-size: 12px;
+}
+
+.action-card {
+	border-top: 40px solid #2f2327;
+}
+
+.action-card.choose-scarecrow {
+	left: 120%;
+}
+
+.action-header {
+	margin-bottom: 20px;
+}
+
+.scarecrow-choice.card-label {
+	font-size: 16px;
+	margin: 5px;
+}
+
+.card-slide-container {
+	position: absolute;
+    top: 0;
+    left: 0;
+	width: 100%;
+	height: 100%;
+	overflow: scroll;
+}
+
+.selected {
+	background: #302427;
+    color: white;
+}
+
+.disable-touch {
+	pointer-events: none;
 }
 
 </style>
@@ -112,10 +308,43 @@ button {
 			</div>
 		</div>
 		<div class="slide slide-2 right-hide">
+			<div class="loading rotating">
+				<img src="../img/celery.png"/>
+			</div>
 			<p id="waiting">Waiting for other players to join...</p>
 		</div>
 		<div class="slide slide-3 right-hide">
-			<div id="choosechanc"></div>
+			<div class="card-slide-container">
+				<div class="card player-card">
+					<div id="role">Celery</div>
+					<div class="card-inner">
+						<div class="circle celery-circle">
+							<img src="../img/celery.png"/>
+						</div>
+						<div class="circle crow-circle">
+							<img src="../img/crow.png"/>
+						</div>
+						<div id="player-name">John Doe</div>
+						<div id="master" class="card-label hide">You're the master</div>
+					</div>
+				</div>
+				<div class="card action-card choose-scarecrow">
+					<div id="action">Action</div>
+					<div class="action-header">Choose a scarecrow:</div>
+					<div class="card-inner">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="slide slide-4 right-hide">
+			<div class="card action-card vote">
+				<div id="action">Action</div>
+				<div class="action-header">Vote on nomination:</div>
+				<div class="card-inner">
+					<div class="card-label vote-btn" data-id="yes">Yes</div>
+					<div class="card-label vote-btn" data-id="no">No</div>
+				</div>
+			</div>
 		</div>
 	</div>
 	
