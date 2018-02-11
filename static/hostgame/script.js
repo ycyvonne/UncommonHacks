@@ -1,15 +1,43 @@
 var socket = io();
 var counter = 0;
+
+var canAddPeople = true;
+var btnInterval;
+
 socket.on('addPlayer', function(data) {
-	$("#playersList").append("<li>" + data + "</li>");
-	counter += 1;
-	if(counter == 5) {
-		socket.emit('startgame', 0);
-		$("#playersList").empty();
-		$("#roomcode").empty();
+	if (canAddPeople) {
+		$("<li>" + data + "</li>").hide().appendTo('#playersList').fadeIn(300);
+		counter += 1;
+		if(counter == 5) {
+			canAddPeople = false;
+			btnInterval = setInterval(function() {
+				$('.next-btn').toggleClass('rotate');
+			}, 500);
+		}
 	}
 });
 
 socket.on('gamestate', function(data) {
-	$('#gardener').html("Your gardener is " + data.players[data.pres_id].name);
+	$('#gardener').html(data.players[data.pres_id].name);
+});
+
+$('document').ready(function() {
+	setTimeout(function() {
+		$('.center-large').removeClass('initial');
+		console.log('hi')
+	}, 100);
+
+	$('.next-btn').click(function() {
+		if (!canAddPeople) {
+			clearInterval(btnInterval)
+			socket.emit('startgame', 0);
+
+			$('.slide-1').addClass('hide');
+			$('.slide-2').removeClass('hide');
+
+			$("#playersList").empty();
+			$("#roomcode").empty();
+			$('.next-btn').removeClass('rotate');
+		}
+	})
 });

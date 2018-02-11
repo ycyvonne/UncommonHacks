@@ -45,13 +45,20 @@ button {
     padding: 40px;
     border-bottom: 20px solid #ff7600;
     z-index: 1;
+
+    -webkit-transition: min-height 1s cubic-bezier(0.63, -0.46, 0.79, 1.66);
+    transition: min-height 1s cubic-bezier(0.63, -0.46, 0.79, 1.66);
 }
+.center-large.initial {
+	min-height: 100px;
+}
+
 
 .title {
 	font-family: 'avenir-black';
 	font-size: 20px;
     color: #0c0c63;
-
+    text-align: center;
 }
 
 .center input {
@@ -111,6 +118,7 @@ button {
 
     -webkit-transition: transform 0.4s ease;
     transition: transform 0.4s cubic-bezier(0.5, -0.03, 0.29, 1.36);
+    box-shadow: 0px 0 20px 0px rgba(0,0,0,0.1);
 }
 
 .next-btn:hover {
@@ -118,31 +126,39 @@ button {
 	transform: rotate(45deg);
 }
 
+.next-btn.rotate {
+	-webkit-transform: rotate(20deg);
+	transform: rotate(20deg);
+}
+
 .next-btn img{
 	height:300px;
+}
+
+.hide {
+	display: none;
 }
 
 </style>
 </head>
 <body>
 	<div class="mobile-wrapper">
-		<div class="center-large">
-			<div class="header"><p class="title">Join: avx9</p></div>
-			<ul id="playersList">
-				<li>Plafdsr 1</li>
-				<li>Playfdsafasder 2</li>
-				<li>Playfdsafdasfer 3</li>
-				<li>Playerfdsfasd 4</li>
-				<li>Pfdsafsdlayer 5</li>
-			</ul>
-		<p id="gardener"></p>
+		<div class="center-large initial">
+			<div class="slide-1">
+				<div class="header" id="roomcode"><p class="title">Join: avx9</p></div>
+				<ul id="playersList">
+				</ul>
+			</div>
+			<div class="slide-2 hide">
+				<p>Your gardner is...</p>
+				<p id="gardener" class="title"></p>
+			</div>
+		
 			<div class="next-btn">
 				<img src="../img/crow.png"/>
 			</div>
 		</div>
 		
 	</div>
-	
 </body>
->>>>>>> 584632fad70ae071b7d9a77b819b046b8067171b
 </html>
