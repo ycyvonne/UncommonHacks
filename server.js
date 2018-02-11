@@ -93,7 +93,7 @@ function Game(){
 		shuffle(roles);
 		var i = 0;
 		for(var id in this.players){
-			players[id].role = roles[i];
+			this.players[id].role = roles[i];
 			i += 1;
 		}
 	}
@@ -103,7 +103,7 @@ function Game(){
 		}
 		this.deck.shuffle();
 		this.assignRoles();
-		var ids = this.players.keys();
+		var ids = Object.keys(this.players);
 		shuffle(ids);
 		this.pres_id = ids[0];
 	}
