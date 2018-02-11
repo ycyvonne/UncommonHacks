@@ -170,6 +170,7 @@ function Game(){
 				this.chanc = null;
 			}
 		}
+		console.log('after discarding', this.deck.limboPile)
 	}
 }
 

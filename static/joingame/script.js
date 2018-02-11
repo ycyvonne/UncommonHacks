@@ -17,11 +17,8 @@ voteChanc = function(vote) {
 	socket.emit('votechanc', [vote, sessionStorage.getItem("userid")]);
 }
 
-discardCard = function(card, description) {
-	socket.emit('discard', {
-		'card': card,
-		'description': description
-	});
+discardCard = function(card) {
+	socket.emit('discard', card);
 }
 
 socket.on('addPlayer', function(data) {
@@ -38,7 +35,8 @@ socket.on('addPlayer', function(data) {
 });
 
 var nominatedScarecrow = false;
-var discarded = false;
+var discardedFirst = false;
+var discardedSecond = false;
 var voted = false;
 
 var policies = {
@@ -166,7 +164,7 @@ socket.on('gamestate', function(data) {
 			// president
 			if (data.deck.limboPile.length == 3) {
 
-				if (!discarded) {
+				if (!discardedFirst) {
 					// discard 1 out of 3
 					//TODO: display 3 buttons and onclick handler (discardCard)
 					console.log(data.deck.limboPile);
@@ -190,7 +188,7 @@ socket.on('gamestate', function(data) {
 						discardCard(role);
 					});
 
-					discarded = true;
+					discardedFirst = true;
 				}
 				
 
@@ -204,7 +202,32 @@ socket.on('gamestate', function(data) {
 			if (data.deck.limboPile.length == 2) {
 				// chancelor picks a card
 				//TODO: display 2 buttons and onclick handler (discardCard)
-				console.log(data.deck.limboPile);
+				
+				if (!discardedSecond) {
+					console.log(data.deck.limboPile);
+
+					$('.slide-' + currentSlide).addClass('left-hide');
+					$('.slide-6').removeClass('right-hide');
+					currentSlide = 6;
+
+					data.deck.limboPile.forEach(function(role, i) {
+						var policy = getRandomPolicy(role);
+						var htmlCard = $('.card-slide-container.policy-container-second-choice').children()[i];
+						
+						$(htmlCard).find('.policy-role').html(role);
+						$(htmlCard).find('.policy-description').html(policy);
+						$(htmlCard).addClass(role);
+						$(htmlCard).attr('data-role',role);
+					});
+
+					$('.policy-card').click(function(e) {
+						var role = $(e.target).attr('data-role');
+						discardCard(role);
+					});
+
+					discardedSecond = true;
+				}
+				
 			} else {
 				// wait for the president to discard one
 				//TODO: display waiting message
