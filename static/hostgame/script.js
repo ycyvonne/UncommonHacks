@@ -2,6 +2,7 @@ var socket = io();
 var counter = 0;
 
 var canAddPeople = true;
+var currentSlide = 1;
 var btnInterval;
 
 socket.on('addPlayer', function(data) {
@@ -28,7 +29,8 @@ $('document').ready(function() {
 	}, 100);
 
 	$('.next-btn').click(function() {
-		if (!canAddPeople) {
+
+		if (!canAddPeople && currentSlide == 1) {
 			clearInterval(btnInterval)
 			socket.emit('startgame', 0);
 
@@ -38,6 +40,7 @@ $('document').ready(function() {
 			$("#playersList").empty();
 			$("#roomcode").empty();
 			$('.next-btn').removeClass('rotate');
+			currentSlide += 1;
 		}
 	})
 });
