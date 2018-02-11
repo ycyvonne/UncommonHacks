@@ -2,7 +2,6 @@
 <html>
 <head>
 	<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-	<script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="script.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -33,6 +32,7 @@ body {
     flex-direction: column;
     padding: 40px;
     border-bottom: 20px solid #21d662;
+    z-index: 1;
 }
 
 .title {
@@ -67,6 +67,10 @@ body {
     margin: 20px;
 }
 
+.bg-img {
+	position: absolute;
+}
+
 </style>
 </head>
 <body>
@@ -78,6 +82,7 @@ body {
 		</form>
 		<div onclick="joinGame();" class="submit">Submit</div>
 	</div>
+	<img class="bg-img" src="../img/crow.png"/>
 <script type="text/javascript">
 	
 </script>
