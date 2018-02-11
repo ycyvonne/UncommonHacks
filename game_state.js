@@ -46,6 +46,9 @@ function Deck(){
 		shuffle(this.drawPile);
 	}
 	this.draw3 = function(){
+		if(this.drawPile.length < 3) {
+			this.shuffle();
+		}
 		for(var i=0; i<3; i++){
 			this.limboPile.push(this.drawPile.shift());
 		}
@@ -58,10 +61,11 @@ function Game(){
 	this.chanc_idx = null;
 	this.inPower = false;
 	this.deck = new Deck();
-	this.progress = {
-		celeries: 0,
-		crows: 0
+	this.score = {
+		celery: 0,
+		crow: 0
 	}
+	this.gameover = false;
 	this.addPlayer = function(id, name){
 		this.players.push(new Player(id, name));
 	}
@@ -105,6 +109,20 @@ function Game(){
 		for(var i=0;i<this.deck.limboPile.length;i++){
 			if(this.deck.limboPile[i]==discardCard){
 				this.deck.limboPile.splice(i, 1);
+			}
+		}
+		if(this.deck.limboPile.length == 1) {
+			this.score[this.deck.limboPile[0]] += 1;
+			if(this.score[celery] == 5) {
+				this.winner = "celery";
+				this.gameover = true;
+			}
+			else if(this.score[crow] == 6) {
+				this.winner = "crow";
+				this.gameover = true;
+			}
+			else {
+				this.deck.limboPile = [];
 			}
 		}
 	}
