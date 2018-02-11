@@ -39,25 +39,6 @@
 
     game_server.onMessage = function(client,message) {
 
-        if(this.fake_latency && message.split('.')[0].substr(0,1) == 'i') {
-
-                //store all input message
-            game_server.messages.push({client:client, message:message});
-
-            setTimeout(function(){
-                if(game_server.messages.length) {
-                    game_server._onMessage( game_server.messages[0].client, game_server.messages[0].message );
-                    game_server.messages.splice(0,1);
-                }
-            }.bind(this), this.fake_latency);
-
-        } else {
-            game_server._onMessage(client, message);
-        }
-    };
-    
-    game_server._onMessage = function(client,message) {
-
             //Cut the message up into sub components
         var message_parts = message.split('.');
             //The first is always the type of message
@@ -67,19 +48,12 @@
             (client.game.player_host.userid == client.userid) ?
                 client.game.player_client : client.game.player_host;
 
-        if(message_type == 'i') {
-                //Input handler will forward this
-            this.onInput(client, message_parts);
-        } else if(message_type == 'p') {
-            client.send('s.p.' + message_parts[1]);
-        } else if(message_type == 'c') {    //Client changed their color!
-            if(other_client)
-                other_client.send('s.c.' + message_parts[1]);
-        } else if(message_type == 'l') {    //A client is asking for lag simulation
-            this.fake_latency = parseFloat(message_parts[1]);
-        }
+        console.log('message', message)
 
-    }; //game_server.onMessage
+        if(message_type == 'i') {
+            this.onInput(client, message_parts);
+        }
+    };
 
     game_server.onInput = function(client, parts) {
             //The input commands come in like u-l,
@@ -104,7 +78,8 @@
         var thegame = {
                 id : UUID(),                //generate a new id for the game
                 player_host:player,         //so we know who initiated the game
-                player_client:null,         //nobody else joined yet, since its new
+                player_client:null,         //nobody else joined yet, since its new,
+                playersArray: [],
                 player_count:1              //for simple checking of state
             };
 
@@ -228,6 +203,7 @@
                         //the player as the client of this game
                     game_instance.player_client = player;
                     game_instance.gamecore.players.other.instance = player;
+                    game_instance.gamecore.addPlayer(player)
                     game_instance.player_count++;
 
                         //start running the game on the server,
