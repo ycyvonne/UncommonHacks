@@ -85,11 +85,14 @@ button {
 	<div class="mobile-wrapper">
 		<div class="center">
 			<p class="title">Crows Vs Celery</p>
-			<form>
+			<form id="joinform">
 				<input type="text" placeholder="Room code" name="roomcode">
 				<input type="text" placeholder="Name" name="name">
 			</form>
-			<button onclick="joinGame();" class="submit">Submit</button>
+			<div id="joinbutton">
+				<button onclick="joinGame();" class="submit">Submit</button>
+			</div>
+			<p id="waiting"></p>
 		</div>
 	</div>
 	
